@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Users;
 import com.example.demo.service.UsersService;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,15 +30,38 @@ public class UsersController {
         return userService.getUserById(id);
     }
 
-    // POST endpoint to create a new user
-    @PostMapping
-    public Users createUser(@RequestBody Users user) {
-        return userService.createUser(user);
+    // Post endpoint to create a new user
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody Users user) {
+
+        try {
+            return ResponseEntity.ok(userService.createUser(user));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+
+    }
+
+    // POST endpoint for user login
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Users user) {
+
+        try {
+            Users loggedUser = userService.login(user);
+
+            return ResponseEntity.ok(loggedUser);
+
+        } catch (RuntimeException ex) {
+
+            return ResponseEntity.badRequest().body(ex.getMessage());
+
+        }
     }
 
     // DELETE endpoint to delete a user by ID
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 }
