@@ -1,10 +1,7 @@
-import { Routes, Route } from "react-router-dom";
-
 import AdminRoutes from "./routes/AdminRoutes";
 import TeacherRoutes from "./routes/TeacherRoutes";
 import StudentRoutes from "./routes/StudentRoutes";
 import AuthRoutes from "./routes/AuthRoutes";
-import NotFound from "./pages/NotFound";
 
 // define all the possivle user types
 type UserStatus = "admin" | "teacher" | "student";
@@ -21,5 +18,5 @@ export default function App() {
         return <AuthRoutes />;
     }
 
-    return routes[userStatus] ?? <NotFound />;
+    return routes[userStatus];
 }
